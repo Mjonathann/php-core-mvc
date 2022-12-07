@@ -1,4 +1,5 @@
 <?php
+
 /** Controlador Frontal */
 
 use Route\Router;
@@ -14,60 +15,58 @@ define("BASE_URL", $router->getBaseUrl());
 define("PARAMS", $router->getParams());
 
 //Cargar clase de controlador
-require_once( BASE_PATH . "Route/autoload.php");
+require_once(BASE_PATH . "Route/autoload.php");
 
-//Cargar el header y menu de la pagina
-require BASE_PATH . 'layout/header.phtml';
-require BASE_PATH . 'layout/menu.phtml';
+require_once(BASE_PATH . "core/Controller.php");
 
-//Instanciar controlador
-//Verifica que el controlador no este vacio
-if ($router->getController() != '') {
-     $controllerName = '\\Controllers\\' . $router->getController();
+//Si el parametro controlador esta vacio, se instancia el controlador por defecto
+if ($router->getController() == '') {
+
+     $defaultController = 'app\\Controllers\\' . $router->getDefaultController();
      $action = $router->getAction();
-     
-     if (class_exists($controllerName)) {
-          $controller = new $controllerName();
 
-          //Ejecutar accion pasada por parametro
-          if (method_exists($controller, $action) && $action != '') {
-               $controller->$action();
-
-               //Si no se recibe la accion, se ejecuta la accion por defecto
-          } else if ($action == '') {
-               $controller->defaultAction();
-          } else {
-               header("HTTP/1.0 404 Not Found");
-               echo '<br/><br/>Action not found';
-          }
-     } else {
+     if (!class_exists($defaultController)) {
           header("HTTP/1.0 404 Not Found");
           echo "<br/><br/>No controller not defined";
+          exit();
      }
 
-     //Si el parametro controlador esta vacio, se instancia el controlador por defecto
-} elseif ($router->getController() == '') {
-     $defaultController = '\\Controllers\\' . $router->getDefaultController();
-     $action = $router->getAction();
-     if (class_exists($defaultController)) {
-          $controller = new $defaultController();
+     $controller = new $defaultController();
 
-          //Llama a la accion por defecto
-          if (method_exists($controller, 'defaultAction')) {
-               $controller->defaultAction();
-          } else {
-               header("HTTP/1.0 404 Not Found");
-               echo '<br/><br/>Action not found';
-          }
-     } else {
+     //Llama a la accion por defecto
+     if (!method_exists($controller, 'defaultAction')) {
           header("HTTP/1.0 404 Not Found");
-          echo "<br/><br/>No controller not defined";
+          echo '<br/><br/>Action not found';
+          exit();
      }
-} else {
-     header("HTTP/1.0 404 Not Found");
-     echo '<br/>No controller found';
+
+     $controller->defaultAction();
+     exit();
 }
 
 
+//Instanciar controlador
 
-require BASE_PATH . 'layout/footer.phtml';
+$controllerName = 'app\\Controllers\\' . $router->getController();
+$action = $router->getAction();
+
+if (!class_exists($controllerName)) {
+     header("HTTP/1.0 404 Not Found");
+     echo "<br/><br/>No controller not defined";
+     exit();
+}
+
+$controller = new $controllerName();
+
+//Ejecutar accion pasada por parametro
+if (method_exists($controller, $action) && $action != '') {
+     $controller->$action();
+
+     //Si no se recibe la accion, se ejecuta la accion por defecto
+} else if (method_exists($controller, 'defaultAction') && $action == '') {
+     $controller->defaultAction();
+} else {
+     header("HTTP/1.0 404 Not Found");
+     echo '<br/><br/>Action not found';
+     exit();
+}

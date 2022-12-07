@@ -1,23 +1,16 @@
 <?php 
-namespace Controllers;
+namespace app\Controllers;
+use Core\Controller ;
 
-class homeController {
+class homeController extends Controller {
     
-    private $modelsPath;
-    private $viewsPath;
-
     public function __construct() {
-        $this->setModelPath();
-        $this->setViewsPath();
+
         /* if ($action == null) {
             return $this->defaultAction();
         } */
-    }
-    private function setModelPath(){
-        $this->modelsPath = BASE_PATH . "app/Models/home/";
-    }
-    private function setViewsPath(){
-        $this->viewsPath = BASE_PATH . "app/Views/home/";
+
+        
     }
 
     public function defaultAction(){
@@ -25,10 +18,14 @@ class homeController {
     }
 
     public function index() {
-        require_once $this->viewsPath . 'index.php';
+        $this->renderView('index.php');
     }
-    public function test() {
-        require_once $this->viewsPath . 'test.php';
+    public function json() {
+        $this->sendJson(array('test' => 'Send Json'));
+    }
+
+    public function partial() {
+        $this->renderPartial('partial.php');
     }
 }
 
