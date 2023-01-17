@@ -4,17 +4,17 @@ namespace Route;
 Class Config{
     protected $basePath;
     protected $baseUrl;
-    protected $appName;
+    protected $folderName;
 
     public function __construct(){
         $absolutePath = explode('\\',dirname(__DIR__));
-        $appName = end($absolutePath);
+        $folderName = end($absolutePath);
         $protocol = !empty($_SERVER['HTTPS'])? 'https://' : 'http://';
         $port = $_SERVER['SERVER_PORT'] == '80' ? '' : ':'. $_SERVER['SERVER_PORT'];
 
-        $this->baseUrl = $protocol . $_SERVER['SERVER_NAME'] . $port . '/' . $appName . '/' ;
+        $this->baseUrl = $protocol . $_SERVER['SERVER_NAME'] . $port . '/' ;
         $this->basePath = str_replace('\\','/',dirname(__DIR__)).'/';
-        $this->appName = $appName;
+        $this->folderName = $folderName;
     }
 
     public function getBasePath(){
@@ -23,8 +23,8 @@ Class Config{
     public function getBaseUrl(){
         return strval($this->baseUrl);
     }
-    public function getAppName(){
-        return strval($this->appName);
+    public function getFolderName(){
+        return strval($this->folderName);
     }
     
 }

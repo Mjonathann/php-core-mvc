@@ -36,10 +36,11 @@ Class Router extends Config{
             $route = $uri;
         }
 
+        //Elimina el primer '/' 
+        $pattern = '/^[\/]?/' ;
         //Elimina el ultimo '/' si existe
         $route = preg_replace('/\/$/','',$route);
-        //Elimina el nombre del proyecto
-        $pattern = '/^[\/]?' . $this->appName . '[\/]?/';
+
         $this->route = preg_replace($pattern,'',$route);
 
     }
@@ -78,13 +79,7 @@ Class Router extends Config{
         return $this->action; 
     }
 
-    public function getControllerPath(){ 
-        return $this->controllerPath;
-    }
     public function getDefaultController(){
         return $this->defaultController;
     }
-    public function getDefaultControllerPath(){ 
-        return $this->defaultControllerPath;
-    }  
 }
