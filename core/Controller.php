@@ -17,7 +17,7 @@
             //Cargar el header y menu de la pagina
             require BASE_PATH . 'layout/header.phtml';
             require BASE_PATH . 'layout/menu.phtml';
-            require_once self::VIEWS_PATH . $childClass .'/'. $view;
+            require self::VIEWS_PATH . lcfirst($childClass) .'/'. str_replace('.php','', $view) . '.php';
 
             //Cargar el header y menu de la pagina
             require BASE_PATH . 'layout/footer.phtml';
@@ -26,7 +26,7 @@
         public function renderPartial($view){
             $childClass = str_replace('app\\Controllers\\','',get_called_class());
             $childClass = str_replace('Controller','',$childClass);
-            require_once self::VIEWS_PATH . $childClass .'/'. $view;
+            include self::VIEWS_PATH . lcfirst($childClass) .'/'. str_replace('.php','', $view) . '.php';
         }
 
         public function sendJson($partial) {

@@ -1,0 +1,32 @@
+# -- Impedir que se pueda ver el listado de contenidos de un directorio
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews
+    </IfModule>
+    RewriteEngine On
+
+    # Redirect Trailing Slashes...
+    RewriteRule ^(.*)/$ /$1 [L,R=301]
+   
+    
+
+    # Handle Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+ 
+</IfModule>
+
+AddType application/x-httpd-php .aspx
+
+ErrorDocument 404 /index.php
+ErrorDocument 403 /index.php
+
+<FilesMatch "\.(htaccess|htpasswd|ini|phps|log|bak|txt|json|ENV|env)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+LimitRequestBody 10000000

@@ -1,7 +1,6 @@
 <?php
 namespace Route;
-
-require 'Config.php';
+use tools\stringConvert;
 
 Class Router extends Config{
     public $controller;
@@ -16,7 +15,7 @@ Class Router extends Config{
 
     public function __construct($uri){
         parent::__construct();
-        $this->defaultController = 'homeController';
+        $this->defaultController = 'HomeController';
         $this->uri = $uri;
         $this->setRoute($uri);
         $this->setArrayRoute($this->route);
@@ -36,12 +35,13 @@ Class Router extends Config{
             $route = $uri;
         }
 
-        //Elimina el primer '/' 
-        $pattern = '/^[\/]?/' ;
+        
+        
         //Elimina el ultimo '/' si existe
         $route = preg_replace('/\/$/','',$route);
 
-        $this->route = preg_replace($pattern,'',$route);
+        //Elimina el primer '/' 
+        $this->route = preg_replace('/^[\/]?/','',$route);
 
     }
     private function setArrayRoute($route){
@@ -53,7 +53,7 @@ Class Router extends Config{
         if (isset($arrayRoute[0]) && $arrayRoute[0] != '') {
         
             $nameController = $arrayRoute[0] . 'Controller';
-            $this->controller = $nameController;
+            $this->controller = stringConvert::toCamel($nameController);
         }else{
             $this->controller =  "";
         }

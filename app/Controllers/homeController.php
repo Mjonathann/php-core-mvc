@@ -18,14 +18,14 @@ class homeController extends Controller {
     }
 
     public function index() {
-        $this->renderView('index.php');
+        $this->renderView('index');
     }
     public function json() {
         $this->sendJson(array('test' => 'Send Json'));
     }
 
     public function partial() {
-        $this->renderPartial('partial.php');
+        $this->renderPartial('partial');
     }
 }
 
