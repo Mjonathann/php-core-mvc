@@ -4,17 +4,18 @@ namespace Route;
 Class Config{
     protected $basePath;
     protected $baseUrl;
-    protected $folderName;
+    protected $folderContainer;
+    protected const PUBLIC_FOLDER = 'public';
 
     public function __construct(){
         $absolutePath = explode('\\',dirname(__DIR__));
-        $folderName = end($absolutePath);
+        $folderContainer = end($absolutePath);
         $protocol = !empty($_SERVER['HTTPS'])? 'https://' : 'http://';
         $port = $_SERVER['SERVER_PORT'] == '80' ? '' : ':'. $_SERVER['SERVER_PORT'];
 
         $this->baseUrl = $protocol . $_SERVER['SERVER_NAME'] . $port . '/' ;
         $this->basePath = str_replace('\\','/',dirname(__DIR__)).'/';
-        $this->folderName = $folderName;
+        $this->folderContainer = $folderContainer;
     }
 
     public function getBasePath(){
@@ -24,7 +25,7 @@ Class Config{
         return strval($this->baseUrl);
     }
     public function getFolderName(){
-        return strval($this->folderName);
+        return strval($this->folderContainer);
     }
     
 }

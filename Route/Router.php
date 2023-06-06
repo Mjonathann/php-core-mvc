@@ -27,22 +27,29 @@ Class Router extends Config{
 
     private function setRoute($uri){
         $route = '';
+        $exp = strtolower('/' . $this->folderContainer . '/' . self::PUBLIC_FOLDER);
         //Elimina el queryString si existe
         //Ya que se puede acceder a el mediante $_GET
         if (strpos($uri, '?')) {
             $route = strstr($uri, '?',true);
         }else{
             $route = $uri;
-        }
-
-        
-        
+        }       
+        $route = strtolower($route);
         //Elimina el ultimo '/' si existe
         $route = preg_replace('/\/$/','',$route);
 
-        //Elimina el primer '/' 
-        $this->route = preg_replace('/^[\/]?/','',$route);
+        //Elimina el nombre de la carpeta del proyecto y '/public'
+        //Para cuando no se usa un host virtual
+        if (!(strpos($route, $exp) === false)) {
+            $route = str_replace($exp,'',$route);
+            $this->baseUrl .= $exp . '/';
+        }
 
+        //Elimina el primer '/' 
+        $route = preg_replace('/^[\/]?/','',$route);
+
+        $this->route = $route;
     }
     private function setArrayRoute($route){
         $this->arrayRoute = explode(self::URL_SEPARATOR,$route);
