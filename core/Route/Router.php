@@ -1,5 +1,5 @@
 <?php
-namespace Route;
+namespace core\Route;
 use tools\stringConvert;
 
 Class Router extends Config{
@@ -27,7 +27,7 @@ Class Router extends Config{
 
     private function setRoute($uri){
         $route = '';
-        $exp = strtolower('/' . $this->folderContainer . '/' . self::PUBLIC_FOLDER);
+        $exp = strtolower($this->folderContainer . '/' . self::PUBLIC_FOLDER . '/');
         //Elimina el queryString si existe
         //Ya que se puede acceder a el mediante $_GET
         if (strpos($uri, '?')) {
@@ -36,18 +36,21 @@ Class Router extends Config{
             $route = $uri;
         }       
         $route = strtolower($route);
+
+        //Elimina el primer '/' 
+        $route = preg_replace('/^[\/]?/','',$route);
+
         //Elimina el ultimo '/' si existe
         $route = preg_replace('/\/$/','',$route);
-
+        
         //Elimina el nombre de la carpeta del proyecto y '/public'
         //Para cuando no se usa un host virtual
         if (!(strpos($route, $exp) === false)) {
             $route = str_replace($exp,'',$route);
+
+            //$exp = preg_replace('/^[\/]?/','',$exp);
             $this->baseUrl .= $exp . '/';
         }
-
-        //Elimina el primer '/' 
-        $route = preg_replace('/^[\/]?/','',$route);
 
         $this->route = $route;
     }

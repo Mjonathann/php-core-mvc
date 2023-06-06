@@ -5,7 +5,7 @@
 
 require_once("../autoload.php");
 
-use Route\Router as Router;
+use core\Route\Router as Router;
 //use Controllers as Controllers;
 
 // require_once 'Route/Router.php';

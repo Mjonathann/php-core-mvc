@@ -1,5 +1,5 @@
 <?php
-namespace Route; 
+namespace core\Route; 
 
 Class Config{
     protected $basePath;
@@ -8,13 +8,13 @@ Class Config{
     protected const PUBLIC_FOLDER = 'public';
 
     public function __construct(){
-        $absolutePath = explode('\\',dirname(__DIR__));
+        $absolutePath = explode('\\',dirname(__DIR__,2));
         $folderContainer = end($absolutePath);
         $protocol = !empty($_SERVER['HTTPS'])? 'https://' : 'http://';
         $port = $_SERVER['SERVER_PORT'] == '80' ? '' : ':'. $_SERVER['SERVER_PORT'];
 
         $this->baseUrl = $protocol . $_SERVER['SERVER_NAME'] . $port . '/' ;
-        $this->basePath = str_replace('\\','/',dirname(__DIR__)).'/';
+        $this->basePath = str_replace('\\','/',dirname(__DIR__,2)).'/';
         $this->folderContainer = $folderContainer;
     }
 
