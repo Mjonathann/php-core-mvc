@@ -1,7 +1,7 @@
 # php_core_mvc
 Ejemplo simple de patrón mvc / Simple mvc pattern example
 
-El proyecto utiliza un controlador frontal(es decir todas las peticiones las maneja index.php) empleando modRewrite de Apache.
+El proyecto utiliza un controlador frontal(es decir todas las peticiones las maneja index.php en el directorio /public) empleando modRewrite de Apache.
 
 Para que funcione correctamente se debe crear un Host Virtual que apunte a la carpeta public dentro del proyecto.
 
